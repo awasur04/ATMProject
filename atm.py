@@ -1,3 +1,4 @@
+import os
 ErrorCount = 0
 Accounts = [{"AccountNumber":0, "Pin":0, "Type":"Account Type", "Social":0, "Balance":0, "LastTransaction":0, "Interest":0}]
 CurrentAccountNumber = 0
@@ -60,10 +61,10 @@ def ShowCustomerWelcome(error):
         Validate(1, AccountNumber, PinNumber)
     elif error == 1 and ErrorCount < 3:
         ErrorCount = ErrorCount + 1
-        print("Invalid Aaccount Information")
+        print("Invalid Account Information")
         AccountNumber = input("Please enter your account number: ")
         PinNumber = input("Please enter your pin number: ")
-        Validate(1)
+        Validate(1, AccountNumber, PinNumber)
     elif ErrorCount >= 3:
         print("Invalid account information, returning to main menu")
         Main()
@@ -72,11 +73,14 @@ def ShowCustomerWelcome(error):
 def Validate(type, TheAccount, ThePin):
     if type == 1: #Customer accounts validation
         for Account in Accounts:
-            while Account != "":
-                if Account["AccountNumber"] == TheAccount:
-                    if Account["Pin"] == ThePin:
-                        ShowCustomerHome(TheAccount)
+            if Account["AccountNumber"] == TheAccount:
+                if Account["Pin"] == ThePin:
+                    ShowCustomerHome(TheAccount)
+                else:
+                    ShowCustomerWelcome(1)
+        else:
             ShowCustomerWelcome(1)
+
     elif type == 2: #Staff account validation
         print("hi")
 
