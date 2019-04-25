@@ -6,8 +6,6 @@ Accounts = [{"AccountNumber":0, "Pin":0, "Type":"Account Type", "Social":0, "Bal
 def Main():
     print("ATM")
     MainChoice = int(input("Are you a customer or staff member? (1 for customer, 2 for staff): "))
-    for Account in Accounts:
-        print(Account)
     if MainChoice == 1:
         ShowCustomerWelcome(0)
     elif MainChoice == 2:
@@ -156,9 +154,13 @@ def ShowCustomerHome(TheAccount):
                         print("That was not an option.")
 
 def StaffFunction(option):
-    if option == 1: # Open Account
+    if option == 1: # Open Account WORKS
         TypeOfAccount = input("What kind of account would you like to open? (c or s)")
         if TypeOfAccount.lower() == "c":
+            for Account in Accounts:
+                if Account["Type"] == "Checkings":
+                    LastAccount = Accounts[len(Accounts)-1]
+                    AccountNumber = int(LastAccount["AccountNumber"]) + 1
             PIN = input("Please enter the PIN: ")
             if len(PIN) > 4 or len(PIN) < 4:
                 print("ERROR!")
@@ -174,7 +176,6 @@ def StaffFunction(option):
             else:
                 SSN = int(SSN)
             Deposit = float(input("Enter in Deposit Amount: "))
-
             Accounts.append({"AccountNumber":AccountNumber, "Pin":PIN, "Type":"Checkings", "Social":SSN, "Balance":Deposit, "LastTransaction":0, "Interest":0})
             print("Account Number",AccountNumber)
             print("Deposit Amount",Deposit)
@@ -182,7 +183,31 @@ def StaffFunction(option):
             Selection = None
             ShowStaffWelcome()
         elif TypeOfAccount.lower() == "s":
-            print("hi")
+            for Account in Accounts:
+                if Account["Type"] == "Savings":
+                    LastAccount = Accounts[len(Accounts)-1]
+                    AccountNumber = int(LastAccount["AccountNumber"]) + 1
+            PIN = input("Please enter the PIN: ")
+            if len(PIN) > 4 or len(PIN) < 4:
+                print("ERROR!")
+                print("PIN is invalid!")
+                return StaffFunction(1)
+            else:
+                PIN = int(PIN)
+            SSN = (input("Enter in the Social Security Number: "))
+            if len(SSN) > 9 or len(SSN) < 9:
+                print("ERROR!")
+                print("SSN is invalid!")
+                return StaffFunction(1)
+            else:
+                SSN = int(SSN)
+            Deposit = float(input("Enter in Deposit Amount: "))
+            Accounts.append({"AccountNumber":AccountNumber, "Pin":PIN, "Type":"Savings", "Social":SSN, "Balance":Deposit, "LastTransaction":0, "Interest":0})
+            print("Account Number",AccountNumber)
+            print("Deposit Amount",Deposit)
+            print("Checkings Account Created")
+            Selection = None
+            ShowStaffWelcome()
         else:
             print("That was not a selection")
             Selection = None
